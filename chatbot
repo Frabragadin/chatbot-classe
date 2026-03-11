@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Chatbot GPT</title>
+</head>
+<body>
+<h2>Chatbot GPT</h2>
+<textarea id="input" placeholder="Scrivi qui..." rows="4" cols="50"></textarea><br>
+<button onclick="sendMessage()">Invia</button>
+<p id="response"></p>
+
+<script>
+async function sendMessage() {
+  const input = document.getElementById("input").value;
+  const responseEl = document.getElementById("response");
+  
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "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"
+    },
+    body: JSON.stringify({
+      model: "gpt-4",
+      messages: [{role: "user", content: input}]
+    })
+  });
+  
+  const data = await res.json();
+  responseEl.textContent = data.choices[0].message.content;
+}
+</script>
+</body>
+</html>
